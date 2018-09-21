@@ -175,20 +175,22 @@ function h = plotRobot(varargin)
     function resizeMarker(h, pose, markerSize)
     % RESIZEMARKER Resizes the robot 'nose' markers to the correct marker
     % size given the current axes limits
-        ax_ = h.Parent; % Get axes
-        lim = axis(ax_); % Get axes limits
-        currentUnits = ax_.Units; % Save current units
-        ax_.Position;
-        ax_.Units = 'Points'; % Change units to points
-        axpos = ax_.Position; % Get axes width and height
-        ax_.Units = currentUnits; % Restore units
-        % Calculate scale from points to data units
-        scale = diff(reshape(lim, [2,2]))./axpos(3:4);
-        a = markerSize.*scale;
-        % Redraw the 'nose'
-        set(h, 'XData', [pose(1), pose(1)+a(1)*cos(pose(3))], ...
-            'YData', [pose(2), pose(2)+a(2)*sin(pose(3))]);
-        axis(ax_, lim); % Restore limits
+        if ishandle(h)
+            ax_ = h.Parent; % Get axes
+            lim = axis(ax_); % Get axes limits
+            currentUnits = ax_.Units; % Save current units
+            ax_.Position;
+            ax_.Units = 'Points'; % Change units to points
+            axpos = ax_.Position; % Get axes width and height
+            ax_.Units = currentUnits; % Restore units
+            % Calculate scale from points to data units
+            scale = diff(reshape(lim, [2,2]))./axpos(3:4);
+            a = markerSize.*scale;
+            % Redraw the 'nose'
+            set(h, 'XData', [pose(1), pose(1)+a(1)*cos(pose(3))], ...
+                'YData', [pose(2), pose(2)+a(2)*sin(pose(3))]);
+            axis(ax_, lim); % Restore limits
+        end
     end
 
     function resizeMarkerArray(markerArray)
